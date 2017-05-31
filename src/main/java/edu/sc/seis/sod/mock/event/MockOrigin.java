@@ -4,7 +4,6 @@ import edu.sc.seis.sod.mock.Defaults;
 import edu.sc.seis.sod.mock.MockLocation;
 import edu.sc.seis.sod.mock.MockParameterRef;
 import edu.sc.seis.sod.model.common.MicroSecondDate;
-import edu.sc.seis.sod.model.common.Time;
 import edu.sc.seis.sod.model.event.Magnitude;
 import edu.sc.seis.sod.model.event.OriginImpl;
 
