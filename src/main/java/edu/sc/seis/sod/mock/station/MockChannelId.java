@@ -1,6 +1,6 @@
 package edu.sc.seis.sod.mock.station;
 
-import edu.sc.seis.sod.model.common.Time;
+import edu.sc.seis.sod.model.common.MicroSecondDate;
 import edu.sc.seis.sod.model.station.ChannelId;
 import edu.sc.seis.sod.model.station.SiteImpl;
 
@@ -25,11 +25,11 @@ public class MockChannelId{
         chanId.network_id = site.getStation().getNetworkAttr().get_id();
         chanId.site_code = site.get_code();
         chanId.station_code = site.getStation().get_code();
-        chanId.begin_time = new Time(site.getStation().getEffectiveTime().getBeginTime());
+        chanId.begin_time = site.getStation().getEffectiveTime().getBeginTime();
         return chanId;
     }
 
-    public static ChannelId makeChanId(Time time) {
+    public static ChannelId makeChanId(MicroSecondDate time) {
         ChannelId chanId =  createVerticalChanId();
         chanId.begin_time = time;
         chanId.network_id.begin_time = time;

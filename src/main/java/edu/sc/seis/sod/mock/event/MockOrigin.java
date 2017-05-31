@@ -18,7 +18,7 @@ public class MockOrigin {
         return new OriginImpl("latlon event",
                               "Test Data",
                               "Charlie Groves",
-                              new Time(time),
+                              time,
                               MockLocation.create(lat, lon),
                               MockMagnitude.createMagnitudes(),
                               MockParameterRef.createParams());
@@ -28,7 +28,7 @@ public class MockOrigin {
         return new OriginImpl("Epoch in Central Alaska",
                               "Test Data",
                               "Charlie Groves",
-                              new Time(time),
+                              time,
                               MockLocation.create(),
                               mags,
                               MockParameterRef.createParams());
@@ -38,7 +38,7 @@ public class MockOrigin {
         return new OriginImpl("Fall of the Berlin Wall",
                               "Test Data",
                               "Charlie Groves",
-                              new Time(Defaults.WALL_FALL),
+                              Defaults.WALL_FALL,
                               MockLocation.createBerlin(),
                               MockMagnitude.createMagnitudes(),
                               MockParameterRef.createParams());
@@ -59,7 +59,7 @@ public class MockOrigin {
     public static OriginImpl[] createOrigins(int num) {
         OriginImpl[] out = new OriginImpl[num];
         for(int i = 0; i < out.length; i++) {
-            out[i] = create(new Time(), MockMagnitude.createMagnitudes());
+            out[i] = create(new MicroSecondDate(), MockMagnitude.createMagnitudes());
         }
         return out;
     }

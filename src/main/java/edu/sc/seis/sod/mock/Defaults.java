@@ -3,8 +3,8 @@ package edu.sc.seis.sod.mock;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import edu.sc.seis.sod.model.common.MicroSecondDate;
 import edu.sc.seis.sod.model.common.QuantityImpl;
-import edu.sc.seis.sod.model.common.Time;
 import edu.sc.seis.sod.model.common.UnitImpl;
 
 public class Defaults{
@@ -23,9 +23,9 @@ public class Defaults{
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     
-    public static final Time EPOCH = new Time(0);
+    public static final MicroSecondDate EPOCH = new MicroSecondDate(0);
     
-    public static final Time WALL_FALL = new Time(cal.getTime());
+    public static final MicroSecondDate WALL_FALL = new MicroSecondDate(cal.getTime());
     
     public static final QuantityImpl ZERO_K = new QuantityImpl(0, UnitImpl.KILOMETER);
     

@@ -50,7 +50,7 @@ public class MockEventAccessOperations {
      *         the 31st of that month and evenly spaced over the entire globe
      */
     public static CacheEvent[] createEventTimeRange() {
-        Time t = new Time("20010101T000000.000Z");
+        MicroSecondDate t = new MicroSecondDate("20010101T000000.000Z");
         MicroSecondTimeRange tr = new MicroSecondTimeRange(new MicroSecondDate(t),
                                                            new TimeInterval(30,
                                                                             UnitImpl.DAY));
@@ -72,7 +72,7 @@ public class MockEventAccessOperations {
             OriginImpl o = new OriginImpl("Mock Event " + i,
                                       "Mockalog",
                                       "Charlie Groves",
-                                      new Time(eventBegin),
+                                      eventBegin,
                                       locs[i],
                                       mags[i],
                                       MockParameterRef.createParams());
