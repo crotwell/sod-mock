@@ -27,7 +27,7 @@ public class MockLocation {
                                   float lon,
                                   QuantityImpl depth,
                                   QuantityImpl elev) {
-        return new Location(lat, lon, elev, depth, LocationType.from_int(1));
+        return new Location(lat, lon, elev, depth);
     }
 
     public static Location[] create(int rows, int cols) {
