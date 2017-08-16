@@ -1,20 +1,27 @@
 package edu.sc.seis.sod.mock.station;
 
-import edu.sc.seis.sod.model.station.NetworkAttrImpl;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
+import edu.sc.seis.sod.mock.Defaults;
 
 public class MockNetworkAttr{
-    public static NetworkAttrImpl createNetworkAttr(){
-        return new NetworkAttrImpl(MockNetworkId.createNetworkID(),
-                                   "A network", "yes, a network", "Joe also");
+    public static Network createNetworkAttr(){
+        Network out = new Network("XX");
+        out.setStartDateTime(Defaults.EPOCH_ZDT);
+        out.setDescription("A network");
+        return out;
     }
 
-    public static NetworkAttrImpl createOtherNetworkAttr(){
-        return new NetworkAttrImpl(MockNetworkId.createOtherNetworkID(),
-                                   "krowten A", "krowten a ,sey", "osla knarF");
+    public static Network createOtherNetworkAttr(){
+        Network out = new Network("XX");
+        out.setStartDateTime(Defaults.WALL_FALL_ZDT);
+        out.setDescription("krowten A");
+        return out;
     }
     
-    public static NetworkAttrImpl createMultiSplendoredAttr(){
-        return new NetworkAttrImpl(MockNetworkId.createMutliSplendoredNetworkID(),
-                                   "A network with many stations", "Many station network", "Charlie Groves");
+    public static Network createMultiSplendoredAttr(){
+        Network out = new Network("MS");
+        out.setStartDateTime(Defaults.WALL_FALL_ZDT);
+        out.setDescription("A network with many stations");
+        return out;
     }
 }

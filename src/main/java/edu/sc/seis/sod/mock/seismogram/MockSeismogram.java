@@ -1,5 +1,8 @@
 package edu.sc.seis.sod.mock.seismogram;
 
+import java.time.ZonedDateTime;
+
+import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.sod.mock.station.MockChannelId;
 import edu.sc.seis.sod.model.common.MicroSecondDate;
 import edu.sc.seis.sod.model.common.ParameterRef;
@@ -53,7 +56,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength) {
-        MicroSecondDate time = new MicroSecondDate("19991231T235959.000Z");
+    		ZonedDateTime time =  BaseNodeType.parseISOString("19991231T235959.000Z");
         TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name,
@@ -66,13 +69,13 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     MicroSecondDate time) {
+                                                     ZonedDateTime time) {
         return createTestData(name, dataBits, time, MockChannelId.makeChanId(time));
     }
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     MicroSecondDate time,
+                                                     ZonedDateTime time,
                                                      ChannelId channelID) {
         TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
@@ -81,7 +84,7 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     MicroSecondDate time,
+                                                     ZonedDateTime time,
                                                      ChannelId channelID,
                                                      SamplingImpl sampling) {
         return createTestData(name,
@@ -94,7 +97,7 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      float[] dataBits,
-                                                     MicroSecondDate time,
+                                                     ZonedDateTime time,
                                                      ChannelId channelID,
                                                      SamplingImpl sampling) {
         return createTestData(name,
@@ -108,7 +111,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength,
-                                                      MicroSecondDate time,
+                                                      ZonedDateTime time,
                                                       ChannelId channelID,
                                                       SamplingImpl sampling) {
         String id = "Nowhere: " + name;
@@ -118,7 +121,7 @@ public class MockSeismogram {
         time_corr[0] = new TimeInterval(.123, UnitImpl.SECOND);
         LocalSeismogramImpl seis = new LocalSeismogramImpl(id,
                                                            props,
-                                                           time,
+                                                           new MicroSecondDate(time),
                                                            bitsLength,
                                                            sampling,
                                                            UnitImpl.COUNT,
@@ -149,7 +152,7 @@ public class MockSeismogram {
         }
         return createTestData("Sine Wave",
                               dataBits,
-                              new MicroSecondDate("19911015T163000.000Z"));
+                              BaseNodeType.parseISOString("19911015T163000.000Z"));
     }
 
     public static LocalSeismogramImpl createSineWave() {
@@ -219,7 +222,7 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createDelta() {
-        MicroSecondDate now = new MicroSecondDate();
+        ZonedDateTime now = ZonedDateTime.now();
         double traceSecs = DEFAULT_TRACE_LENGTH.getValue(UnitImpl.SECOND);
         int[] dataBits = new int[(int)(SPIKE_SAMPLES_PER_SECOND * traceSecs)];
         dataBits[0] = 1;
@@ -230,18 +233,18 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createSpike() {
-        return createSpike(new MicroSecondDate());
+        return createSpike(ZonedDateTime.now());
     }
 
     public static LocalSeismogramImpl createSpike(ChannelId chanId) {
-        return createSpike(new MicroSecondDate(), DEFAULT_TRACE_LENGTH, 20, chanId);
+        return createSpike(ZonedDateTime.now(), DEFAULT_TRACE_LENGTH, 20, chanId);
     }
 
-    public static LocalSeismogramImpl createSpike(MicroSecondDate spikeTime) {
+    public static LocalSeismogramImpl createSpike(ZonedDateTime spikeTime) {
         return createSpike(spikeTime, DEFAULT_TRACE_LENGTH);
     }
 
-    public static LocalSeismogramImpl createSpike(MicroSecondDate spikeTime,
+    public static LocalSeismogramImpl createSpike(ZonedDateTime spikeTime,
                                                   TimeInterval traceLength) {
         return createSpike(spikeTime,
                            traceLength,
@@ -249,14 +252,14 @@ public class MockSeismogram {
                            MockChannelId.makeChanId(spikeTime));
     }
 
-    public static LocalSeismogramImpl createSpike(MicroSecondDate time,
+    public static LocalSeismogramImpl createSpike(ZonedDateTime time,
                                                   TimeInterval traceLength,
                                                   int samplesPerSpike,
                                                   ChannelId id) {
         return createRaggedSpike(time, traceLength, samplesPerSpike, 0, id);
     }
 
-    public static LocalSeismogramImpl createRaggedSpike(MicroSecondDate time,
+    public static LocalSeismogramImpl createRaggedSpike(ZonedDateTime time,
                                                         TimeInterval traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,
@@ -269,7 +272,7 @@ public class MockSeismogram {
                                  SPIKE_SAMPLES_PER_SECOND);
     }
 
-    public static LocalSeismogramImpl createRaggedSpike(MicroSecondDate time,
+    public static LocalSeismogramImpl createRaggedSpike(ZonedDateTime time,
                                                         TimeInterval traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,
@@ -277,7 +280,7 @@ public class MockSeismogram {
                                                         double samplesPerSecond) {
         double secondShift = missingSamples / samplesPerSecond;
         TimeInterval shiftInt = new TimeInterval(secondShift, UnitImpl.SECOND);
-        time = time.add(shiftInt);
+        time = time.plusNanos(Math.round(1000000000 * secondShift));
         traceLength = traceLength.subtract(shiftInt);
         String name = "spike at " + time.toString();
         double traceSecs = traceLength.convertTo(UnitImpl.SECOND).getValue();

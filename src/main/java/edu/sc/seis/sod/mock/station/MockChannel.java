@@ -1,131 +1,122 @@
 package edu.sc.seis.sod.mock.station;
 
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 import edu.sc.seis.sod.model.common.Location;
 import edu.sc.seis.sod.model.common.Orientation;
-import edu.sc.seis.sod.model.common.SamplingImpl;
-import edu.sc.seis.sod.model.common.TimeInterval;
-import edu.sc.seis.sod.model.common.UnitImpl;
 import edu.sc.seis.sod.model.station.ChannelGroup;
-import edu.sc.seis.sod.model.station.ChannelId;
-import edu.sc.seis.sod.model.station.ChannelImpl;
-import edu.sc.seis.sod.model.station.SiteImpl;
-import edu.sc.seis.sod.model.station.StationImpl;
 
 public class MockChannel {
     
-    public static ChannelImpl createChannel() {
-        return createChannel(MockChannelId.createVerticalChanId(),
-                             "Vertical Channel",
-                             MockSite.createSite(),
-                             VERTICAL);
+    public static Channel createChannel() {
+        return createChannel(MockStation.createStation(), "00", "BHZ",
+                             20,
+                             0, -90,
+                             0,
+                             "Vertical Channel");
     }
 
-    public static ChannelImpl createNorthChannel() {
-        return createChannel(MockChannelId.createNorthChanId(),
-                             "North Channel",
-                             MockSite.createSite(),
-                             NORTH);
+    public static Channel createNorthChannel() {
+        return createChannel(MockStation.createStation(), "00", "BHN",
+                20,
+                0, 0,
+                0,
+                "North Channel");
     }
 
-    public static ChannelImpl createEastChannel() {
-        return createChannel(MockChannelId.createEastChanId(),
-                             "East Channel",
-                             MockSite.createSite(),
-                             EAST);
+    public static Channel createEastChannel() {
+        return createChannel(MockStation.createStation(), "00", "BHE",
+                20,
+                90, 0,
+                0,
+                "East Channel");
     }
 
-    public static ChannelImpl createOtherSiteSameStationChan() {
-        return createChannel(MockChannelId.createOtherSiteSameStationChanId(),
-                             "Other Site Same Station Vertical Channel",
-                             MockSite.createOtherSiteSameStation(),
-                             VERTICAL);
+    public static Channel createOtherSiteSameStationChan() {
+        Channel out = createChannel(MockStation.createStation(), "01", "BHZ",
+                20,
+                0, -90,
+                0,
+                "Nearby Vertical Channel");
+        out.setLatitude(out.getLatitude().getValue() + .001f);
+        return out;
     }
 
-    public static ChannelImpl createOtherNetChan() {
-        return createChannel(MockChannelId.createOtherNetChanId(),
-                             "Other Net Vertical Channel",
-                             MockSite.createOtherSite(),
-                             VERTICAL);
+    public static Channel createOtherNetChan() {
+        Channel out = createChannel(MockStation.createOtherStation(), "00", "BHZ",
+                20,
+                0, -90,
+                0,
+                "Vertical Channel");
+        return out;
     }
 
-    public static ChannelImpl[] createChannelsAtLocs(Location[] locs) {
-        ChannelImpl[] chans = new ChannelImpl[locs.length];
+    public static Channel[] createChannelsAtLocs(Location[] locs) {
+        Channel[] chans = new Channel[locs.length];
         for(int i = 0; i < chans.length; i++) {
             chans[i] = createChannel(locs[i]);
         }
         return chans;
     }
 
-    public static ChannelImpl createChannel(Location location) {
-        return createChannel( MockSite.createSite(location));
+    public static Channel createChannel(Location location) {
+        return createChannel( MockStation.createStation(location));
     }
 
-    public static ChannelImpl createChannel(SiteImpl site) {
-        return createChannel(MockChannelId.createChanId("BHZ", site),
-                             "fake chan",
-                             site,
-                             VERTICAL);
-    }
     
-    public static ChannelImpl createChannel(StationImpl station) {
+    public static Channel createChannel(Station station) {
         return createChannel(station, "00", "BHZ");
     }
     
-    public static ChannelImpl createChannel(StationImpl station, String siteCode, String chanCode) {
-        SiteImpl s = MockSite.createSite(station, siteCode);
-        Orientation o = VERTICAL;
+    public static Channel createChannel(Station station, String siteCode, String chanCode) {
+        float az = 0;
+        float dip = -90;
         if (chanCode.endsWith("N")) {
-            o = NORTH;
+            az = 0;
+            dip = 0;
         } else if (chanCode.endsWith("E")) {
-            o = EAST;
+            az = 90;
+            dip = 0;
         }
-        return createChannel(MockChannelId.createChanId(chanCode, s),
-                             "fake chan",
-                             s,
-                             o);
+        return createChannel(MockStation.createStation(), "00", "BHZ",
+                20,
+                az, dip,
+                0,
+                chanCode+" Channel");
     }
     
-    public static ChannelImpl createChannelWithId(ChannelId chanId) {
-        Orientation o;
-        if (chanId.channel_code.endsWith("Z")) {
-            o = VERTICAL;
-        } else if (chanId.channel_code.endsWith("N")) {
-            o = NORTH;
-        } else if (chanId.channel_code.endsWith("E")) {
-            o = EAST;
-        } else {
-            o = VERTICAL;
-        }
-        return createChannel(chanId, "", MockSite.createSite(MockStation.createStation(), chanId.site_code), o);
+    public static Channel createChannel(Station station,
+    		                                String locCode,
+    		                                String chanCode,
+    		                                float sampleRate,
+    		                                float azimuth,
+    		                                float dip,
+    		                                float depth,
+    		                                String desc) {
+        Channel out = new Channel(station, locCode, chanCode);
+        out.setAzimuth(azimuth);
+        out.setDepth(depth);
+        out.setDescription(desc);
+        out.setDip(dip);
+        out.setElevation(station.getElevation());
+        out.setEndDateTime(station.getEndDateTime());
+        out.setLatitude(station.getLatitude());
+        out.setLongitude(station.getLongitude());
+        out.setSampleRate(sampleRate);
+        out.setStartDateTime(station.getStartDateTime());
+        return out;
     }
 
-    private static ChannelImpl createChannel(ChannelId id,
-                                         String info,
-                                         SiteImpl s,
-                                         Orientation o) {
-        return new ChannelImpl(id,
-                               info,
-                               o,
-                               new SamplingImpl(20,
-                                                new TimeInterval(1.0,
-                                                                 UnitImpl.SECOND)),
-                               s.getEffectiveTime(),
-                               s);
-    }
-
-    public static ChannelImpl[] createMotionVector() {
+    public static Channel[] createMotionVector() {
         return createMotionVector(MockStation.createStation());
     }
 
-    public static ChannelImpl[] createMotionVector(StationImpl station) {
-        ChannelImpl[] channels = new ChannelImpl[3];
-        SiteImpl s = MockSite.createSite(station);
+    public static Channel[] createMotionVector(Station station) {
+        Channel[] channels = new Channel[3];
         String[] codes = {"BHZ", "BHN", "BHE"};
+        String locCode = "00";
         for(int i = 0; i < codes.length; i++) {
-            channels[i] = createChannel(MockChannelId.createChanId(codes[i], s),
-                                        "Motion Vector Channel " + codes[i],
-                                        s,
-                                        ORIENTATIONS[i]);
+            channels[i] = createChannel(station, locCode, codes[i]);
         }
         return channels;
     }
