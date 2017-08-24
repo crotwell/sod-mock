@@ -121,7 +121,7 @@ public class MockSeismogram {
         time_corr[0] = new TimeInterval(.123, UnitImpl.SECOND);
         LocalSeismogramImpl seis = new LocalSeismogramImpl(id,
                                                            props,
-                                                           new MicroSecondDate(time),
+                                                           time,
                                                            bitsLength,
                                                            sampling,
                                                            UnitImpl.COUNT,
