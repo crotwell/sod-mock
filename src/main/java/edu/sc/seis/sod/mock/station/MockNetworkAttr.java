@@ -10,6 +10,12 @@ public class MockNetworkAttr{
         out.setDescription("A network");
         return out;
     }
+    public static Network createNetworkAttr(String code){
+        Network out = new Network(code);
+        out.setStartDateTime(Defaults.EPOCH_ZDT);
+        out.setDescription(code+" network");
+        return out;
+    }
 
     public static Network createOtherNetworkAttr(){
         Network out = new Network("XX");
