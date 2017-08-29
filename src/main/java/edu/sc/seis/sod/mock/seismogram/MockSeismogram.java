@@ -1,6 +1,6 @@
 package edu.sc.seis.sod.mock.seismogram;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.sod.mock.station.MockChannelId;
@@ -56,7 +56,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength) {
-    		ZonedDateTime time =  BaseNodeType.parseISOString("19991231T235959.000Z");
+        Instant time =  BaseNodeType.parseISOString("19991231T235959.000Z");
         TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name,
@@ -69,13 +69,13 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     ZonedDateTime time) {
+                                                     Instant time) {
         return createTestData(name, dataBits, time, MockChannelId.makeChanId(time));
     }
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     ZonedDateTime time,
+                                                     Instant time,
                                                      ChannelId channelID) {
         TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
@@ -84,7 +84,7 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      int[] dataBits,
-                                                     ZonedDateTime time,
+                                                     Instant time,
                                                      ChannelId channelID,
                                                      SamplingImpl sampling) {
         return createTestData(name,
@@ -97,7 +97,7 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createTestData(String name,
                                                      float[] dataBits,
-                                                     ZonedDateTime time,
+                                                     Instant time,
                                                      ChannelId channelID,
                                                      SamplingImpl sampling) {
         return createTestData(name,
@@ -111,7 +111,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength,
-                                                      ZonedDateTime time,
+                                                      Instant time,
                                                       ChannelId channelID,
                                                       SamplingImpl sampling) {
         String id = "Nowhere: " + name;
@@ -222,7 +222,7 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createDelta() {
-        ZonedDateTime now = ZonedDateTime.now();
+        Instant now = Instant.now();
         double traceSecs = DEFAULT_TRACE_LENGTH.getValue(UnitImpl.SECOND);
         int[] dataBits = new int[(int)(SPIKE_SAMPLES_PER_SECOND * traceSecs)];
         dataBits[0] = 1;
@@ -233,18 +233,18 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createSpike() {
-        return createSpike(ZonedDateTime.now());
+        return createSpike(Instant.now());
     }
 
     public static LocalSeismogramImpl createSpike(ChannelId chanId) {
-        return createSpike(ZonedDateTime.now(), DEFAULT_TRACE_LENGTH, 20, chanId);
+        return createSpike(Instant.now(), DEFAULT_TRACE_LENGTH, 20, chanId);
     }
 
-    public static LocalSeismogramImpl createSpike(ZonedDateTime spikeTime) {
+    public static LocalSeismogramImpl createSpike(Instant spikeTime) {
         return createSpike(spikeTime, DEFAULT_TRACE_LENGTH);
     }
 
-    public static LocalSeismogramImpl createSpike(ZonedDateTime spikeTime,
+    public static LocalSeismogramImpl createSpike(Instant spikeTime,
                                                   TimeInterval traceLength) {
         return createSpike(spikeTime,
                            traceLength,
@@ -252,14 +252,14 @@ public class MockSeismogram {
                            MockChannelId.makeChanId(spikeTime));
     }
 
-    public static LocalSeismogramImpl createSpike(ZonedDateTime time,
+    public static LocalSeismogramImpl createSpike(Instant time,
                                                   TimeInterval traceLength,
                                                   int samplesPerSpike,
                                                   ChannelId id) {
         return createRaggedSpike(time, traceLength, samplesPerSpike, 0, id);
     }
 
-    public static LocalSeismogramImpl createRaggedSpike(ZonedDateTime time,
+    public static LocalSeismogramImpl createRaggedSpike(Instant time,
                                                         TimeInterval traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,
@@ -272,7 +272,7 @@ public class MockSeismogram {
                                  SPIKE_SAMPLES_PER_SECOND);
     }
 
-    public static LocalSeismogramImpl createRaggedSpike(ZonedDateTime time,
+    public static LocalSeismogramImpl createRaggedSpike(Instant time,
                                                         TimeInterval traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,

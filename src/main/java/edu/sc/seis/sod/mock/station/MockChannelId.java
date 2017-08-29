@@ -1,6 +1,6 @@
 package edu.sc.seis.sod.mock.station;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 import edu.sc.seis.sod.model.station.ChannelId;
@@ -29,7 +29,7 @@ public class MockChannelId{
         return chanId;
     }
 
-    public static ChannelId makeChanId(ZonedDateTime time) {
+    public static ChannelId makeChanId(Instant time) {
         ChannelId chanId =  createVerticalChanId();
         chanId.setStartTime(time);
         return chanId;
