@@ -5,14 +5,10 @@ import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.sod.mock.station.MockChannelId;
-import edu.sc.seis.sod.model.common.MicroSecondDate;
-import edu.sc.seis.sod.model.common.ParameterRef;
 import edu.sc.seis.sod.model.common.SamplingImpl;
-import edu.sc.seis.sod.model.common.TimeInterval;
 import edu.sc.seis.sod.model.common.TimeRange;
 import edu.sc.seis.sod.model.common.UnitImpl;
 import edu.sc.seis.sod.model.seismogram.LocalSeismogramImpl;
-import edu.sc.seis.sod.model.seismogram.Property;
 import edu.sc.seis.sod.model.seismogram.TimeSeriesDataSel;
 import edu.sc.seis.sod.model.station.ChannelId;
 

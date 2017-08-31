@@ -7,7 +7,6 @@ import edu.sc.seis.sod.mock.MockLocation;
 import edu.sc.seis.sod.mock.MockParameterRef;
 import edu.sc.seis.sod.model.event.Magnitude;
 import edu.sc.seis.sod.model.event.OriginImpl;
-import edu.sc.seis.sod.util.time.ClockUtil;
 
 public class MockOrigin {
 
@@ -60,7 +59,7 @@ public class MockOrigin {
     public static OriginImpl[] createOrigins(int num) {
         OriginImpl[] out = new OriginImpl[num];
         for(int i = 0; i < out.length; i++) {
-            out[i] = create(ClockUtil.now(), MockMagnitude.createMagnitudes());
+            out[i] = create(Instant.now(), MockMagnitude.createMagnitudes());
         }
         return out;
     }
