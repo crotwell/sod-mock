@@ -1,12 +1,13 @@
 package edu.sc.seis.sod.mock.event;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.sod.mock.MockLocation;
 import edu.sc.seis.sod.mock.MockParameterRef;
 import edu.sc.seis.sod.model.common.Location;
-import edu.sc.seis.sod.model.common.MicroSecondDate;
-import edu.sc.seis.sod.model.common.MicroSecondTimeRange;
-import edu.sc.seis.sod.model.common.TimeInterval;
-import edu.sc.seis.sod.model.common.UnitImpl;
+import edu.sc.seis.sod.model.common.TimeRange;
 import edu.sc.seis.sod.model.event.CacheEvent;
 import edu.sc.seis.sod.model.event.EventAttrImpl;
 import edu.sc.seis.sod.model.event.Magnitude;
@@ -22,7 +23,7 @@ public class MockEventAccessOperations {
         return createEvent(MockOrigin.create(), MockEventAttr.create());
     }
 
-    public static CacheEvent createEvent(MicroSecondDate time, float lat, float lon) {
+    public static CacheEvent createEvent(Instant time, float lat, float lon) {
         return createEvent(MockOrigin.create(time, lat, lon), MockEventAttr.create());
     }
 
@@ -31,7 +32,7 @@ public class MockEventAccessOperations {
                            MockEventAttr.createWallFallAttr());
     }
 
-    public static CacheEvent createEvent(MicroSecondDate eventTime,
+    public static CacheEvent createEvent(Instant eventTime,
                                          int magnitudeAndDepth,
                                          int feRegion) {
         Magnitude[] mags = {new Magnitude("test", magnitudeAndDepth, "another")};
@@ -49,25 +50,23 @@ public class MockEventAccessOperations {
      *         the 31st of that month and evenly spaced over the entire globe
      */
     public static CacheEvent[] createEventTimeRange() {
-        MicroSecondDate t = new MicroSecondDate("20010101T000000.000Z");
-        MicroSecondTimeRange tr = new MicroSecondTimeRange(new MicroSecondDate(t),
-                                                           new TimeInterval(30,
-                                                                            UnitImpl.DAY));
+        Instant t = BaseNodeType.parseISOString("20010101T000000.000Z");
+        TimeRange tr = new TimeRange(t, Duration.ofDays(30));
         return createEvents(tr, 3, 6);
     }
 
-    public static CacheEvent[] createEvents(MicroSecondTimeRange timeRange,
+    public static CacheEvent[] createEvents(TimeRange timeRange,
                                             int rows,
                                             int cols) {
         int numEvents = rows * cols;
-        TimeInterval timeBetweenEvents = (TimeInterval)timeRange.getInterval()
-                .divideBy(numEvents);
+        Duration timeBetweenEvents = timeRange.getInterval()
+                .dividedBy(numEvents);
         CacheEvent[] events = new CacheEvent[numEvents];
         Location[] locs = MockLocation.create(rows, cols);
         Magnitude[][] mags = MockMagnitude.getMagnitudes(4.0f, 10.0f, numEvents);
         for(int i = 0; i < numEvents; i++) {
-            MicroSecondDate eventBegin = timeRange.getBeginTime()
-                    .add((TimeInterval)timeBetweenEvents.multiplyBy(i));
+            Instant eventBegin = timeRange.getBeginTime()
+                    .plus(timeBetweenEvents.multipliedBy(i));
             OriginImpl o = new OriginImpl("Mock Event " + i,
                                       "Mockalog",
                                       "Charlie Groves",

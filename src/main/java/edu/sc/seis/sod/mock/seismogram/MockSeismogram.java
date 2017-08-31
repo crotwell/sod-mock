@@ -1,5 +1,6 @@
 package edu.sc.seis.sod.mock.seismogram;
 
+import java.time.Duration;
 import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
@@ -8,6 +9,7 @@ import edu.sc.seis.sod.model.common.MicroSecondDate;
 import edu.sc.seis.sod.model.common.ParameterRef;
 import edu.sc.seis.sod.model.common.SamplingImpl;
 import edu.sc.seis.sod.model.common.TimeInterval;
+import edu.sc.seis.sod.model.common.TimeRange;
 import edu.sc.seis.sod.model.common.UnitImpl;
 import edu.sc.seis.sod.model.seismogram.LocalSeismogramImpl;
 import edu.sc.seis.sod.model.seismogram.Property;
@@ -19,7 +21,7 @@ public class MockSeismogram {
 
     public static final int SPIKE_SAMPLES_PER_SECOND = 20;
     
-    public static final TimeInterval DEFAULT_TRACE_LENGTH = new TimeInterval(50, UnitImpl.SECOND);
+    public static final Duration DEFAULT_TRACE_LENGTH = Duration.ofSeconds(50);
 
     public static int[] createRandomDataBits(int length) {
         int[] dataBits = new int[length];
@@ -57,7 +59,7 @@ public class MockSeismogram {
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength) {
         Instant time =  BaseNodeType.parseISOString("19991231T235959.000Z");
-        TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
+        Duration timeInterval = Duration.ofSeconds(1);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name,
                               bits,
@@ -77,7 +79,7 @@ public class MockSeismogram {
                                                      int[] dataBits,
                                                      Instant time,
                                                      ChannelId channelID) {
-        TimeInterval timeInterval = new TimeInterval(1, UnitImpl.SECOND);
+        Duration timeInterval = Duration.ofSeconds(1);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name, dataBits, time, channelID, sampling);
     }
@@ -115,21 +117,14 @@ public class MockSeismogram {
                                                       ChannelId channelID,
                                                       SamplingImpl sampling) {
         String id = "Nowhere: " + name;
-        Property[] props = new Property[1];
-        props[0] = new Property("Name", name);
-        TimeInterval[] time_corr = new TimeInterval[1];
-        time_corr[0] = new TimeInterval(.123, UnitImpl.SECOND);
         LocalSeismogramImpl seis = new LocalSeismogramImpl(id,
-                                                           props,
                                                            time,
                                                            bitsLength,
                                                            sampling,
                                                            UnitImpl.COUNT,
                                                            channelID,
-                                                           new ParameterRef[0],
-                                                           time_corr,
-                                                           new SamplingImpl[0],
                                                            bits);
+        seis.setProperty("Name", name);
         return seis;
     }
 
@@ -223,7 +218,7 @@ public class MockSeismogram {
 
     public static LocalSeismogramImpl createDelta() {
         Instant now = Instant.now();
-        double traceSecs = DEFAULT_TRACE_LENGTH.getValue(UnitImpl.SECOND);
+        double traceSecs = DEFAULT_TRACE_LENGTH.toNanos()/1000000000.0;
         int[] dataBits = new int[(int)(SPIKE_SAMPLES_PER_SECOND * traceSecs)];
         dataBits[0] = 1;
         return createTestData("kronecker delta at 0",
@@ -245,7 +240,7 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createSpike(Instant spikeTime,
-                                                  TimeInterval traceLength) {
+                                                  Duration traceLength) {
         return createSpike(spikeTime,
                            traceLength,
                            20,
@@ -253,14 +248,14 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createSpike(Instant time,
-                                                  TimeInterval traceLength,
+                                                  Duration traceLength,
                                                   int samplesPerSpike,
                                                   ChannelId id) {
         return createRaggedSpike(time, traceLength, samplesPerSpike, 0, id);
     }
 
     public static LocalSeismogramImpl createRaggedSpike(Instant time,
-                                                        TimeInterval traceLength,
+                                                        Duration traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,
                                                         ChannelId id) {
@@ -273,14 +268,14 @@ public class MockSeismogram {
     }
 
     public static LocalSeismogramImpl createRaggedSpike(Instant time,
-                                                        TimeInterval traceLength,
+                                                        Duration traceLength,
                                                         int samplesPerSpike,
                                                         int missingSamples,
                                                         ChannelId id,
                                                         double samplesPerSecond) {
         double secondShift = missingSamples / samplesPerSecond;
-        TimeInterval shiftInt = new TimeInterval(secondShift, UnitImpl.SECOND);
-        time = time.plusNanos(Math.round(1000000000 * secondShift));
+        Duration shiftInt = Duration.ofNanos(Math.round(secondShift*TimeRange.NANOS_IN_SEC));
+        time = time.plusNanos(Math.round(TimeRange.NANOS_IN_SEC * secondShift));
         traceLength = traceLength.subtract(shiftInt);
         String name = "spike at " + time.toString();
         double traceSecs = traceLength.convertTo(UnitImpl.SECOND).getValue();
@@ -292,8 +287,6 @@ public class MockSeismogram {
                               dataBits,
                               time,
                               id,
-                              new SamplingImpl(dataBits.length,
-                                               new TimeInterval(traceSecs,
-                                                                UnitImpl.SECOND)));
+                              SamplingImpl.ofSamplesSeconds(dataBits.length, traceSecs));
     }
 }

@@ -1,11 +1,13 @@
 package edu.sc.seis.sod.mock.event;
 
+import java.time.Instant;
+
 import edu.sc.seis.sod.mock.Defaults;
 import edu.sc.seis.sod.mock.MockLocation;
 import edu.sc.seis.sod.mock.MockParameterRef;
-import edu.sc.seis.sod.model.common.MicroSecondDate;
 import edu.sc.seis.sod.model.event.Magnitude;
 import edu.sc.seis.sod.model.event.OriginImpl;
+import edu.sc.seis.sod.util.time.ClockUtil;
 
 public class MockOrigin {
 
@@ -13,7 +15,7 @@ public class MockOrigin {
         return create(Defaults.EPOCH, MockMagnitude.createMagnitudes());
     }
 
-    public static OriginImpl create(MicroSecondDate time, float lat, float lon) {
+    public static OriginImpl create(Instant time, float lat, float lon) {
         return new OriginImpl("latlon event",
                               "Test Data",
                               "Charlie Groves",
@@ -23,7 +25,7 @@ public class MockOrigin {
                               MockParameterRef.createParams());
     }
 
-    public static OriginImpl create(MicroSecondDate time, Magnitude[] mags) {
+    public static OriginImpl create(Instant time, Magnitude[] mags) {
         return new OriginImpl("Epoch in Central Alaska",
                               "Test Data",
                               "Charlie Groves",
@@ -58,7 +60,7 @@ public class MockOrigin {
     public static OriginImpl[] createOrigins(int num) {
         OriginImpl[] out = new OriginImpl[num];
         for(int i = 0; i < out.length; i++) {
-            out[i] = create(new MicroSecondDate(), MockMagnitude.createMagnitudes());
+            out[i] = create(ClockUtil.now(), MockMagnitude.createMagnitudes());
         }
         return out;
     }
