@@ -3,10 +3,9 @@ package edu.sc.seis.sod.mock.seismogram;
 import java.time.Duration;
 import java.time.Instant;
 
-import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.sod.mock.station.MockChannelId;
 import edu.sc.seis.sod.model.common.SamplingImpl;
-import edu.sc.seis.sod.model.common.TimeRange;
 import edu.sc.seis.sod.model.common.UnitImpl;
 import edu.sc.seis.sod.model.seismogram.LocalSeismogramImpl;
 import edu.sc.seis.sod.model.seismogram.TimeSeriesDataSel;
@@ -54,7 +53,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength) {
-        Instant time =  BaseNodeType.parseISOString("19991231T235959.000Z");
+        Instant time =  TimeUtils.parseISOString("19991231T235959.000Z");
         Duration timeInterval = Duration.ofSeconds(1);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name,
@@ -143,7 +142,7 @@ public class MockSeismogram {
         }
         return createTestData("Sine Wave",
                               dataBits,
-                              BaseNodeType.parseISOString("19911015T163000.000Z"));
+                              TimeUtils.parseISOString("19911015T163000.000Z"));
     }
 
     public static LocalSeismogramImpl createSineWave() {
@@ -270,8 +269,8 @@ public class MockSeismogram {
                                                         ChannelId id,
                                                         double samplesPerSecond) {
         double secondShift = missingSamples / samplesPerSecond;
-        Duration shiftInt = Duration.ofNanos(Math.round(secondShift*TimeRange.NANOS_IN_SEC));
-        time = time.plusNanos(Math.round(TimeRange.NANOS_IN_SEC * secondShift));
+        Duration shiftInt = Duration.ofNanos(Math.round(secondShift*TimeUtils.NANOS_IN_SEC));
+        time = time.plusNanos(Math.round(TimeUtils.NANOS_IN_SEC * secondShift));
         traceLength = traceLength.subtract(shiftInt);
         String name = "spike at " + time.toString();
         double traceSecs = traceLength.convertTo(UnitImpl.SECOND).getValue();

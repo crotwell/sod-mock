@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.Month;
 import java.time.ZonedDateTime;
 
-import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.sod.model.common.QuantityImpl;
 import edu.sc.seis.sod.model.common.UnitImpl;
 
@@ -13,7 +13,7 @@ public class Defaults{
 
     public static final Instant EPOCH =  Instant.ofEpochMilli(0);
     
-    public static final Instant WALL_FALL = ZonedDateTime.of(1990, Month.JUNE.getValue(), 13, 12, 0, 0, 0, BaseNodeType.TZ_UTC).toInstant();
+    public static final Instant WALL_FALL = ZonedDateTime.of(1990, Month.JUNE.getValue(), 13, 12, 0, 0, 0, TimeUtils.TZ_UTC).toInstant();
     
     public static final Instant EPOCH_ZDT =  Instant.ofEpochSecond(0);
     

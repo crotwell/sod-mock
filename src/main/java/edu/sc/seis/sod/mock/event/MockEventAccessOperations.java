@@ -3,7 +3,7 @@ package edu.sc.seis.sod.mock.event;
 import java.time.Duration;
 import java.time.Instant;
 
-import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.sod.mock.MockLocation;
 import edu.sc.seis.sod.mock.MockParameterRef;
 import edu.sc.seis.sod.model.common.Location;
@@ -50,7 +50,7 @@ public class MockEventAccessOperations {
      *         the 31st of that month and evenly spaced over the entire globe
      */
     public static CacheEvent[] createEventTimeRange() {
-        Instant t = BaseNodeType.parseISOString("20010101T000000.000Z");
+        Instant t = TimeUtils.parseISOString("20010101T000000.000Z");
         TimeRange tr = new TimeRange(t, Duration.ofDays(30));
         return createEvents(tr, 3, 6);
     }
