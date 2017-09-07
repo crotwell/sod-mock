@@ -269,11 +269,11 @@ public class MockSeismogram {
                                                         ChannelId id,
                                                         double samplesPerSecond) {
         double secondShift = missingSamples / samplesPerSecond;
-        Duration shiftInt = Duration.ofNanos(Math.round(secondShift*TimeUtils.NANOS_IN_SEC));
-        time = time.plusNanos(Math.round(TimeUtils.NANOS_IN_SEC * secondShift));
-        traceLength = traceLength.subtract(shiftInt);
+        Duration shiftInt = TimeUtils.durationFromSeconds(secondShift);
+        time = time.plus(shiftInt);
+        traceLength = traceLength.minus(shiftInt);
         String name = "spike at " + time.toString();
-        double traceSecs = traceLength.convertTo(UnitImpl.SECOND).getValue();
+        double traceSecs = TimeUtils.durationToDoubleSeconds(traceLength);
         int[] dataBits = new int[(int)Math.round((samplesPerSecond * traceSecs))];
         for(int i = missingSamples; i < dataBits.length; i+= samplesPerSpike) {
             dataBits[i] = 100;
