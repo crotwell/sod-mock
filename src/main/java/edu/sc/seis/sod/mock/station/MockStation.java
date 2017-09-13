@@ -11,7 +11,7 @@ public class MockStation {
     		Station out = new Station(MockNetworkAttr.createNetworkAttr(), "STTN");
     		out.setDescription("this is a test");
     		out.setStartDateTime(out.getNetwork().getStartDateTime());
-    		out.setEndDate("19991231T235959.999Z");
+    		out.setEndDate(YEAR_1999);
     		Location berlin = MockLocation.createBerlin();
     		out.setLatitude(berlin.latitude);
     		out.setLongitude(berlin.longitude);
@@ -23,7 +23,7 @@ public class MockStation {
     public static Station createRestartedStation() {
 		Station out = new Station(MockNetworkAttr.createNetworkAttr(), "STTN");
 		out.setDescription("this is a test");
-		out.setStartDate("20000101T000000.000Z");
+		out.setStartDate(YEAR_2K);
 		Location berlin = MockLocation.createBerlin();
 		out.setLatitude(berlin.latitude);
 		out.setLongitude(berlin.longitude);
@@ -36,7 +36,7 @@ public class MockStation {
 		Station out = new Station(MockNetworkAttr.createOtherNetworkAttr(), "STB2");
 		out.setDescription("tset a si siht");
 		out.setStartDateTime(out.getNetwork().getStartDateTime());
-		out.setEndDate("19991231T235959.999Z");
+		out.setEndDate(YEAR_1999);
 		Location berlin = MockLocation.createBerlin();
 		out.setLatitude(berlin.latitude + 1);
 		out.setLongitude(berlin.longitude);
@@ -53,7 +53,7 @@ public class MockStation {
 		Station out = new Station(MockNetworkAttr.createNetworkAttr(), "CLS2U");
 		out.setDescription("Close to you, is this too close?");
 		out.setStartDateTime(out.getNetwork().getStartDateTime());
-		out.setEndDate("19991231T235959.999Z");
+		out.setEndDate(YEAR_1999);
 		Location berlin = MockLocation.createBerlin();
 		out.setLatitude(berlin.latitude + 0.01f);
 		out.setLongitude(berlin.longitude);
@@ -68,7 +68,7 @@ public class MockStation {
         for(int i = 0; i < stations.length; i++) {
         	    Station out = new Station(MockNetworkAttr.createMultiSplendoredAttr(), "MS"+i);
         	    out.setDescription("Grid of Stations "+i);
-        	    out.setStartDate("20000101T000000.000Z");
+        	    out.setStartDate(YEAR_2K);
         	    Location berlin = MockLocation.createBerlin();
         	    out.setLatitude(berlin.latitude);
         	    out.setLongitude(berlin.longitude);
@@ -89,4 +89,7 @@ public class MockStation {
 		out.setName("Somewhere "+location.latitude+" "+location.longitude);
 		return out;
     }
+
+    public static final String YEAR_2K = "2000-01-01T00:00:00.000Z";
+    public static final String YEAR_1999 = "1999-12-31T23:59:59.999Z";
 }
