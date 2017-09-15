@@ -53,7 +53,7 @@ public class MockSeismogram {
     public static LocalSeismogramImpl createTestData(String name,
                                                       TimeSeriesDataSel bits,
                                                       int bitsLength) {
-        Instant time =  TimeUtils.parseISOString("19991231T235959.000Z");
+        Instant time =  TimeUtils.parseISOString("1999-12-31T23:59:59.000Z");
         Duration timeInterval = Duration.ofSeconds(1);
         SamplingImpl sampling = new SamplingImpl(20, timeInterval);
         return createTestData(name,
