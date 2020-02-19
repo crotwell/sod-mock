@@ -78,7 +78,7 @@ public class MockChannel {
             az = 90;
             dip = 0;
         }
-        return createChannel(MockStation.createStation(), "00", "BHZ",
+        return createChannel(MockStation.createStation(), "00", chanCode,
                 20,
                 az, dip,
                 0,
