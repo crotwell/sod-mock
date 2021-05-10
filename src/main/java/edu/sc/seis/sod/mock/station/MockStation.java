@@ -16,7 +16,6 @@ public class MockStation {
     		out.setLatitude(berlin.latitude);
     		out.setLongitude(berlin.longitude);
     		out.setElevation((float)berlin.elevation.getValue(UnitImpl.METER));
-    		out.setName("Test Station");
     		return out;
     }
 
@@ -28,7 +27,6 @@ public class MockStation {
 		out.setLatitude(berlin.latitude);
 		out.setLongitude(berlin.longitude);
 		out.setElevation((float)berlin.elevation.getValue(UnitImpl.METER));
-		out.setName("Test Station");
 		return out;
     }
 
@@ -41,7 +39,6 @@ public class MockStation {
 		out.setLatitude(berlin.latitude + 1);
 		out.setLongitude(berlin.longitude);
 		out.setElevation((float)berlin.elevation.getValue(UnitImpl.METER));
-		out.setName("Noitats tset");
 		return out;
     }
 
@@ -58,7 +55,6 @@ public class MockStation {
 		out.setLatitude(berlin.latitude + 0.01f);
 		out.setLongitude(berlin.longitude);
 		out.setElevation((float)berlin.elevation.getValue(UnitImpl.METER));
-		out.setName("Close Station");
 		return out;
     }
 
@@ -73,7 +69,6 @@ public class MockStation {
         	    out.setLatitude(berlin.latitude);
         	    out.setLongitude(berlin.longitude);
         	    out.setElevation((float)berlin.elevation.getValue(UnitImpl.METER));
-        	    out.setName("Multi" + i);
         	    stations[i] = out;
         }
         return stations;
@@ -86,7 +81,6 @@ public class MockStation {
 		out.setLatitude(location.latitude);
 		out.setLongitude(location.longitude);
 		out.setElevation((float)location.elevation.getValue(UnitImpl.METER));
-		out.setName("Somewhere "+location.latitude+" "+location.longitude);
 		return out;
     }
 
