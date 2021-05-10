@@ -19,12 +19,12 @@ java {
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-  implementation("edu.sc.seis:seedCodec:1.0.11")
-  implementation("edu.sc.seis:seisFile:1.7.4")
+  implementation("edu.sc.seis:seedCodec:1.1.1")
+  implementation("edu.sc.seis:seisFile:2.0.0")
   implementation("edu.sc.seis:sod-model:4.0.0-SNAPSHOT")
   // Use JUnit Jupiter API for testing.
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
